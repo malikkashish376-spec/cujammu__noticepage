@@ -1,8 +1,33 @@
 # 🏛️ CU Jammu Campus Pulse - Notification, Vacancy & Reminder Alert Portal
+
 **जम्मू केंद्रीय विश्वविद्यालय | Central University of Jammu (CUJ)**
 *Established under Central Universities Act, 2009 | Rahya-Suchani (Bagla), Samba - 181143*
 
-A full-featured, real-time campus notification portal with **smartphone push alert simulation**, **recurring deadline reminders ("Baar-Baar Reminder")**, **vacancy tracking**, **fee collection**, and **role-based panels** for **Admin, Seniors/Faculty, and Students**.
+[![Live Demo](https://img.shields.io/badge/%E2%96%B6%20LIVE%20DEMO-Open%20the%20portal-0B2545?style=for-the-badge&labelColor=EEB902)](https://malikkashish376-spec.github.io/cujammu__noticepage/)
+[![GitHub Pages](https://img.shields.io/badge/hosted%20on-GitHub%20Pages-2ea44f?style=flat-square)](https://malikkashish376-spec.github.io/cujammu__noticepage/)
+[![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-5-646cff?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+
+## 🔗 Live Website
+
+### 👉 **https://malikkashish376-spec.github.io/cujammu__noticepage/**
+
+Open the link on any phone or laptop — no sign-up, no install. It is a public page, so you can
+share it with classmates, faculty or on WhatsApp exactly as it is.
+
+| | |
+|---|---|
+| **Live URL** | https://malikkashish376-spec.github.io/cujammu__noticepage/ |
+| **Host** | GitHub Pages (free, HTTPS, public) |
+| **Source branch** | `main` — the deployable build lives on `gh-pages` |
+| **Runs on** | Any modern browser; installs nothing |
+
+A full-featured campus notification portal with **smartphone push alert simulation**, **recurring deadline reminders ("Baar-Baar Reminder")**, **vacancy tracking**, **fee collection**, and **role-based panels** for **Admin, Seniors/Faculty, and Students**.
+
+> **Demo data notice:** this is a front-end demo. Notices, applications and logins are stored in
+> each visitor's own browser (`localStorage`), so a notice you publish is visible only in your
+> browser. Payments and OTPs are simulated. See [Limitations](#limitations) below.
 
 ---
 
@@ -115,3 +140,34 @@ src/
 
 All data lives in `localStorage`, so the portal runs without a backend. Clear the
 site data to reset it to the seeded demo content.
+
+---
+
+## ⚠️ Limitations
+
+This build is a **front-end demo**, not a multi-user service.
+
+- **No backend.** Notices, submissions, accounts and sessions live in `localStorage` of the
+  browser you are using. Publishing a notice or submitting a form affects only your browser.
+  Clearing site data resets everything to the seeded demo content.
+- **OTP is shown on screen.** Email delivery needs EmailJS keys in
+  `src/config/emailjsConfig.js`; without them the OTP appears in a dev banner.
+- **Payments are simulated.** The UPI / card / net-banking step generates a reference number
+  locally and charges nothing.
+- **Deadlines are relative.** Seed data uses `now + N hours`, so countdowns always look fresh.
+
+To turn it into a real portal you need a small backend: a database for notices and applications,
+server-side OTP/email, and a payment gateway (Razorpay or similar).
+
+## 🚀 Updating the live site
+
+GitHub Pages serves a built snapshot from the `gh-pages` branch, so a push to `main` does **not**
+change the live site by itself.
+
+```bash
+npm run build -- --base=/cujammu__noticepage/
+# copy dist/ to the gh-pages branch, add .nojekyll, commit and push
+```
+
+Alternatively, link the repo on Netlify — `netlify.toml` is already committed there, so every
+push to `main` rebuilds automatically.
