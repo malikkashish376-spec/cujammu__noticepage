@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
 import { formatCurrency, formatDeadline, getTimeRemaining } from '../utils/dateUtils';
+import { initialsAvatar } from '../utils/avatar';
 import { 
   GraduationCap, 
   FileCheck2, 
@@ -28,9 +29,12 @@ export default function StudentDashboard({ onOpenSubmitModal, onOpenPhoneModal }
   // Student's submissions
   const mySubmissions = submissions.filter(s => s.studentId === currentUser?.id);
 
-  // Notices student has NOT submitted yet
+  // Notices student has NOT submitted yet and that are still open
   const pendingNotices = announcements.filter(
-    a => a.hasForm && !submissions.some(s => s.noticeId === a.id && s.studentId === currentUser?.id)
+    a =>
+      a.hasForm &&
+      !submissions.some(s => s.noticeId === a.id && s.studentId === currentUser?.id) &&
+      !getTimeRemaining(a.deadline).isExpired
   );
 
   return (
@@ -41,8 +45,12 @@ export default function StudentDashboard({ onOpenSubmitModal, onOpenPhoneModal }
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center space-x-4">
             <img
-              src={currentUser?.avatar}
+              src={currentUser?.avatar || initialsAvatar(currentUser?.name)}
               alt={currentUser?.name}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = initialsAvatar(currentUser?.name);
+              }}
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-4 ring-amber-400/80 shadow-lg flex-shrink-0"
             />
             <div>
@@ -90,7 +98,7 @@ export default function StudentDashboard({ onOpenSubmitModal, onOpenPhoneModal }
           <div className="bg-white/5 p-3 rounded-2xl border border-white/10 col-span-2 sm:col-span-1">
             <span className="text-[11px] font-semibold text-slate-300 block">Mobile Reminders</span>
             <span className="text-xs font-bold text-slate-200">
-              {reminderConfig.enabled ? 'Active (Every 25s)' : 'Paused'}
+              {reminderConfig.enabled ? `Active (Every ${reminderConfig.intervalSeconds}s)` : 'Paused'}
             </span>
           </div>
         </div>

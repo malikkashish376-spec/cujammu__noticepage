@@ -40,15 +40,22 @@
 }
 
 @keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-  display: inline-block;
+/* Seamless ticker: the track holds the list twice and slides by half its width. */
+.marquee-track {
+  display: inline-flex;
   white-space: nowrap;
-  animation: marquee 25s linear infinite;
+  animation: marquee 45s linear infinite;
 }
-.animate-marquee:hover {
+.marquee-track:hover {
   animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

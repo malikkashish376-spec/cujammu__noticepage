@@ -3,17 +3,29 @@ import { INITIAL_USERS, CUJ_DEPARTMENTS } from '../data/initialData';
 
 const AuthContext = createContext();
 
+// localStorage can hold a truncated or hand-edited value; a bad JSON payload
+// used to throw during the first render and leave a blank page.
+function readStorage(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch (err) {
+    console.warn(`Ignoring unreadable localStorage entry "${key}"`, err);
+    localStorage.removeItem(key);
+    return fallback;
+  }
+}
+
 export function AuthProvider({ children }) {
   const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('cuj_users_v2');
-    return saved ? JSON.parse(saved) : INITIAL_USERS;
+    const saved = readStorage('cuj_users_v2', null);
+    return Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_USERS;
   });
 
   // null = not logged in; object = logged in user
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('cuj_session_v2');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [currentUser, setCurrentUser] = useState(() =>
+    readStorage('cuj_session_v2', null)
+  );
 
   // Login state: 'idle' | 'pending_otp' | 'logged_in'
   const [authState, setAuthState] = useState('idle');

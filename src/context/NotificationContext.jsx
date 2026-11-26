@@ -4,20 +4,32 @@ import { soundManager } from '../utils/soundAlerts';
 
 const NotificationContext = createContext();
 
+// A corrupt localStorage value used to throw on first render (blank page).
+function readStorage(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch (err) {
+    console.warn(`Ignoring unreadable localStorage entry "${key}"`, err);
+    localStorage.removeItem(key);
+    return fallback;
+  }
+}
+
 export function NotificationProvider({ children }) {
   const [announcements, setAnnouncements] = useState(() => {
-    const saved = localStorage.getItem('cuj_announcements');
-    return saved ? JSON.parse(saved) : INITIAL_ANNOUNCEMENTS;
+    const saved = readStorage('cuj_announcements', null);
+    return Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_ANNOUNCEMENTS;
   });
 
   const [submissions, setSubmissions] = useState(() => {
-    const saved = localStorage.getItem('cuj_submissions');
-    return saved ? JSON.parse(saved) : INITIAL_SUBMISSIONS;
+    const saved = readStorage('cuj_submissions', null);
+    return Array.isArray(saved) ? saved : INITIAL_SUBMISSIONS;
   });
 
   const [notifications, setNotifications] = useState(() => {
-    const saved = localStorage.getItem('cuj_notifications_queue');
-    if (saved) return JSON.parse(saved);
+    const saved = readStorage('cuj_notifications_queue', null);
+    if (Array.isArray(saved)) return saved;
     // Initial notifications representing recent campus updates
     return [
       {

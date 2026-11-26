@@ -18,12 +18,25 @@ export default {
           bg: '#F8FAFC'
         }
       },
+      // `shadow-xs`, `backdrop-blur-xs` and `w-13/h-13` are Tailwind v4 names.
+      // The project runs on Tailwind v3, so they are defined here to keep the
+      // classes used in the components working.
+      boxShadow: {
+        xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      spacing: {
+        13: '3.25rem',
+      },
       animation: {
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'bounce-short': 'bounce 0.6s infinite',
         'fade-in': 'fadeIn 0.3s ease-out forwards',
         'slide-down': 'slideDown 0.35s ease-out forwards',
         'wiggle': 'wiggle 1s ease-in-out infinite',
+        'slide-up': 'slideUp 0.35s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -32,6 +45,10 @@ export default {
         },
         slideDown: {
           '0%': { opacity: '0', transform: 'translateY(-20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         wiggle: {
@@ -43,4 +60,3 @@ export default {
   },
   plugins: [],
 }
-

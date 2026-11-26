@@ -139,6 +139,7 @@ export default function AuthModal({ isOpen, onClose }) {
     const result = verifyOtp(email, otpString);
     if (!result.valid) { setError(result.error); return; }
     const login = confirmLogin(email);
+    if (!login.success) { setError(login.error || 'Could not sign you in. Please try again.'); return; }
     if (login.success) {
       dispatchNotification({
         title: `✅ Welcome back, ${login.user.name}!`,
@@ -181,6 +182,7 @@ export default function AuthModal({ isOpen, onClose }) {
     const result = verifyOtp(email, otpString);
     if (!result.valid) { setError(result.error); return; }
     const login = confirmRegistration(email);
+    if (!login.success) { setError(login.error || 'Could not activate your account. Please try again.'); return; }
     if (login.success) {
       dispatchNotification({
         title: `🎉 Welcome to CU Jammu Campus Pulse, ${login.user.name}!`,
