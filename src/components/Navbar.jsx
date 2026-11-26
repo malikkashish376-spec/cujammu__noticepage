@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
+import { initialsAvatar } from '../utils/avatar';
 import {
   Bell, Smartphone, Volume2, VolumeX,
   LogOut, Shield, GraduationCap, Users, ChevronDown,
@@ -137,7 +138,11 @@ export default function Navbar({ onOpenAuthModal, onOpenPhoneModal, onOpenNotifi
                 {profileOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 animate-slide-down">
                     <div className="flex items-center space-x-3 pb-3 mb-3 border-b border-slate-100">
-                      <img src={currentUser.avatar} alt={currentUser.name}
+                      <img src={currentUser.avatar || initialsAvatar(currentUser.name)} alt={currentUser.name}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = initialsAvatar(currentUser.name);
+                        }}
                         className="w-10 h-10 rounded-xl object-cover ring-2 ring-cuj-blue/20" />
                       <div className="min-w-0">
                         <div className="font-bold text-slate-900 text-sm truncate">{currentUser.name}</div>
